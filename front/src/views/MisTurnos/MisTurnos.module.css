@@ -1,0 +1,12 @@
+.contenedor {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    min-height: 87vh;
+    flex-wrap: wrap;
+}
+
+.año {
+    text-align: center;
+}

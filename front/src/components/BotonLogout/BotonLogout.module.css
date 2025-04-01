@@ -1,0 +1,12 @@
+.boton {
+    background-color: rgba(255, 0, 0, 0.57);
+    color: rgb(245, 245, 234);
+    /* border-radius: 50%; */
+    /* border-color: azure; */
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.boton:hover {
+  transform: scale(1.05); 
+}
