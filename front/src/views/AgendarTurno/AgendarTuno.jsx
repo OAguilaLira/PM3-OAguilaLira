@@ -1,14 +1,19 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import axios from "axios";
 import styles from "./AgendarTurno.module.css";
+import { mergeDateTime } from "../../helpers/mergeDateTime";
 import { validateCitas } from "../../helpers/validateCitas";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import DatePicker from 'react-datepicker';
+import DatePicker, { registerLocale } from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
+import { es } from 'date-fns/locale/es';
+registerLocale('es', es)
 
 const AgendarTurno = () => {
   const [startDate, setStartDate] = useState(new Date());
+  const [time, setTime] = useState(new Date());
   const isLogin = useSelector((state) => state.login);
   const idUserLogin = useSelector((state) => state.user.id)
   const navigate = useNavigate()
@@ -21,16 +26,23 @@ const AgendarTurno = () => {
     
   
 
-  const handleOnSubmit = (valoresFormulario) => {
-    const dateTime = new Date(`${valoresFormulario.date}T${valoresFormulario.time}:00.000Z`).toISOString();
-    valoresFormulario.userId = idUserLogin;
-    valoresFormulario.date = dateTime
-    valoresFormulario.time = dateTime
-    console.log(valoresFormulario);
-    axios
-      .post("http://localhost:3000/appointment/schedule", valoresFormulario)
-      .then((response) => alert(response.data.message))
-      .catch((error) => alert(error.response.data));
+  const handleOnSubmit = () => {
+    console.log(startDate)
+    const hasErrors = validateCitas(startDate)
+    if (!hasErrors){
+      const dateTime = new Date(`${startDate}T10:00.000Z`).toISOString();
+      valoresFormulario.userId = idUserLogin;
+      valoresFormulario.date = dateTime
+      valoresFormulario.time = dateTime
+      console.log(valoresFormulario);
+      axios
+        .post("http://localhost:3000/appointment/schedule", valoresFormulario)
+        .then((response) => alert(response.data.message))
+        .catch((error) => alert(error.response.data));
+      }
+    else {
+      alert(hasErrors)
+    }
   };
 
   return (
@@ -94,7 +106,27 @@ const AgendarTurno = () => {
           );
         }}
       </Formik> */}
-      
+      <DatePicker
+      selected={startDate}
+      onChange={(date) => setStartDate(date)}
+      locale="es"
+      inline
+      />
+      <button onClick={()=> console.log(startDate.toISOString())}>Seleccionar fecha</button>
+      <DatePicker
+      selected={time}
+      onChange={(date) => {setTime(date)}}
+      showTimeSelect
+      showTimeSelectOnly
+      timeIntervals={30}
+      timeCaption="Time"
+      dateFormat="h:mm aa"
+      locale="es"
+      inline
+      />
+      <button onClick={() => {console.log(time.toISOString())}}>Seleccionar hora</button>
+      <button onClick={() => {console.log(mergeDateTime(startDate, time))}}>Mostrar hora agendada</button>
+
     </div>
   );
 };
