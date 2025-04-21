@@ -3,10 +3,12 @@ import axios from "axios";
 import styles from "./AgendarTurno.module.css";
 import { validateCitas } from "../../helpers/validateCitas";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import DatePicker from 'react-datepicker';
 
 const AgendarTurno = () => {
+  const [startDate, setStartDate] = useState(new Date());
   const isLogin = useSelector((state) => state.login);
   const idUserLogin = useSelector((state) => state.user.id)
   const navigate = useNavigate()
@@ -16,7 +18,8 @@ const AgendarTurno = () => {
     } 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isLogin]);
-
+    
+  
 
   const handleOnSubmit = (valoresFormulario) => {
     const dateTime = new Date(`${valoresFormulario.date}T${valoresFormulario.time}:00.000Z`).toISOString();
@@ -32,7 +35,7 @@ const AgendarTurno = () => {
 
   return (
     <div className={styles.contenedor}>
-      <Formik
+      {/* <Formik
         initialValues={{
           date: "",
           time: "",
@@ -90,7 +93,8 @@ const AgendarTurno = () => {
             </Form>
           );
         }}
-      </Formik>
+      </Formik> */}
+      
     </div>
   );
 };
