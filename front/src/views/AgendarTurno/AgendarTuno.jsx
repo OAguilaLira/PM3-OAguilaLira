@@ -29,20 +29,21 @@ const AgendarTurno = () => {
   const handleOnSubmit = () => {
     console.log(startDate)
     const hasErrors = validateCitas(startDate)
-    if (!hasErrors){
-      const dateTime = new Date(`${startDate}T10:00.000Z`).toISOString();
-      valoresFormulario.userId = idUserLogin;
-      valoresFormulario.date = dateTime
-      valoresFormulario.time = dateTime
-      console.log(valoresFormulario);
-      axios
-        .post("http://localhost:3000/appointment/schedule", valoresFormulario)
-        .then((response) => alert(response.data.message))
-        .catch((error) => alert(error.response.data));
-      }
-    else {
-      alert(hasErrors)
-    }
+    console.log(hasErrors);
+    // if (!hasErrors){
+    //   const dateTime = new Date(`${startDate}T10:00.000Z`).toISOString();
+    //   valoresFormulario.userId = idUserLogin;
+    //   valoresFormulario.date = dateTime
+    //   valoresFormulario.time = dateTime
+    //   console.log(valoresFormulario);
+    //   axios
+    //     .post("http://localhost:3000/appointment/schedule", valoresFormulario)
+    //     .then((response) => alert(response.data.message))
+    //     .catch((error) => alert(error.response.data));
+    //   }
+    // else {
+    //   alert(hasErrors)
+    // }
   };
 
   return (
@@ -125,7 +126,7 @@ const AgendarTurno = () => {
       inline
       />
       <button onClick={() => {console.log(time.toISOString())}}>Seleccionar hora</button>
-      <button onClick={() => {console.log(mergeDateTime(startDate, time))}}>Mostrar hora agendada</button>
+      <button onClick={() => {handleOnSubmit(mergeDateTime(startDate, time))}}>Mostrar hora agendada</button>
 
     </div>
   );
