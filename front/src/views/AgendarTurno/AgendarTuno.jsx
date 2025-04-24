@@ -29,19 +29,12 @@ const AgendarTurno = () => {
 
   const handleOnSubmit = (dateTime) => {
     const data = {};
-    // console.log(dateTime)
-    // const hasErrors = validateCitas(dateTime)
-    // console.log(hasErrors);
     const hasErrors = validateCitas(dateTime)
-    console.log("#### Eror")
-    console.log(hasErrors);
     if (!hasErrors.date){
       const formatedDateTime = dateTime.toUTC().toISO();
       data.userId = idUserLogin;
       data.date = formatedDateTime
       data.time = formatedDateTime
-      console.log('#### Data')
-      console.log(data);
       axios
         .post("http://localhost:3000/appointment/schedule", data)
         .then((response) => alert(response.data.message))
@@ -49,7 +42,7 @@ const AgendarTurno = () => {
       }
     else {
       console.log(hasErrors)
-      // alert(hasErrors)
+      alert(`Errores al agendar el turno: ${hasErrors.date}`)
     }
   };
 
