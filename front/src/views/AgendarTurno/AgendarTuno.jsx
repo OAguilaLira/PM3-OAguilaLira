@@ -10,6 +10,7 @@ import DatePicker, { registerLocale } from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { es } from 'date-fns/locale/es';
 registerLocale('es', es)
+import { DateTime } from "luxon";
 
 const AgendarTurno = () => {
   const [startDate, setStartDate] = useState(new Date());
@@ -26,24 +27,30 @@ const AgendarTurno = () => {
     
   
 
-  const handleOnSubmit = () => {
-    console.log(startDate)
-    const hasErrors = validateCitas(startDate)
+  const handleOnSubmit = (dateTime) => {
+    const data = {};
+    // console.log(dateTime)
+    // const hasErrors = validateCitas(dateTime)
+    // console.log(hasErrors);
+    const hasErrors = validateCitas(dateTime)
+    console.log("#### Eror")
     console.log(hasErrors);
-    // if (!hasErrors){
-    //   const dateTime = new Date(`${startDate}T10:00.000Z`).toISOString();
-    //   valoresFormulario.userId = idUserLogin;
-    //   valoresFormulario.date = dateTime
-    //   valoresFormulario.time = dateTime
-    //   console.log(valoresFormulario);
-    //   axios
-    //     .post("http://localhost:3000/appointment/schedule", valoresFormulario)
-    //     .then((response) => alert(response.data.message))
-    //     .catch((error) => alert(error.response.data));
-    //   }
-    // else {
-    //   alert(hasErrors)
-    // }
+    if (!hasErrors.date){
+      const formatedDateTime = dateTime.toUTC().toISO();
+      data.userId = idUserLogin;
+      data.date = formatedDateTime
+      data.time = formatedDateTime
+      console.log('#### Data')
+      console.log(data);
+      axios
+        .post("http://localhost:3000/appointment/schedule", data)
+        .then((response) => alert(response.data.message))
+        .catch((error) => alert(error.response.data));
+      }
+    else {
+      console.log(hasErrors)
+      // alert(hasErrors)
+    }
   };
 
   return (
@@ -108,6 +115,7 @@ const AgendarTurno = () => {
         }}
       </Formik> */}
       <DatePicker
+      label="Seleccionar Fecha"
       selected={startDate}
       onChange={(date) => setStartDate(date)}
       locale="es"
@@ -115,6 +123,7 @@ const AgendarTurno = () => {
       />
       <button onClick={()=> console.log(startDate.toISOString())}>Seleccionar fecha</button>
       <DatePicker
+      label="Seleccionar Hora"
       selected={time}
       onChange={(date) => {setTime(date)}}
       showTimeSelect
@@ -124,6 +133,10 @@ const AgendarTurno = () => {
       dateFormat="h:mm aa"
       locale="es"
       inline
+      // filterTime={(time) => {
+      //   const hour = DateTime.fromJSDate(time).hour;
+      //   return hour >= 9 && hour < 18; // Horario comercial 9AM - 6PM
+      // }}
       />
       <button onClick={() => {console.log(time.toISOString())}}>Seleccionar hora</button>
       <button onClick={() => {handleOnSubmit(mergeDateTime(startDate, time))}}>Mostrar hora agendada</button>

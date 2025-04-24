@@ -20,8 +20,9 @@ export const MisTurnos = () => {
     } else {
       axios
         .get(`http://localhost:3000/users/${userId}`)
-        .then((response) =>
+        .then((response) => {
           dispath(establecerAppointments(response.data.user.appointments))
+        }
         )
         .catch((error) => {
           alert(error.response ? error.response.data : error);
