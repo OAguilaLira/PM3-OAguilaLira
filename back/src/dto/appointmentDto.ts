@@ -1,8 +1,8 @@
-
 interface appointmentDto {
-    date: Date,
-    time: Date,
-    userId: number,
+  date: Date;
+  notes?: string;
+  userId: string;
+  serviceId: string;
 }
 
 export default appointmentDto;

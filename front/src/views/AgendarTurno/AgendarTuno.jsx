@@ -34,7 +34,7 @@ const AgendarTurno = () => {
       const formatedDateTime = dateTime.toUTC().toISO();
       data.userId = idUserLogin;
       data.date = formatedDateTime
-      data.time = formatedDateTime
+      data.serviceId = '22ed7b3e-1aa0-4f27-995a-2ac01bd0e4c2'
       axios
         .post("http://localhost:3000/appointment/schedule", data)
         .then((response) => alert(response.data.message))
