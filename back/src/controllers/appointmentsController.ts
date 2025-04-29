@@ -14,7 +14,6 @@ import { AppointmentService } from "../services/appointmentsServices";
 export class AppointmentController {
   constructor(private appointmentService: AppointmentService) {}
   async createAppointment(req: Request, res: Response) {
-    console.log(this.appointmentService);
     try {
       const { date, serviceId, notes, userId } = req.body;
       const createAppointmentData =

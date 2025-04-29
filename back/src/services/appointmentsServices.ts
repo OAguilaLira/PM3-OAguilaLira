@@ -39,7 +39,7 @@ export class AppointmentService {
     );
 
     if (isSlotTaken) {
-      throw new Error("El turno indicadon no está disponible");
+      throw new Error("El horario indicadon no está disponible");
     }
 
     const appointment: AppointmentEntity = new AppointmentEntity();
@@ -56,6 +56,7 @@ export class AppointmentService {
       message: "Turno creado con exito",
       appointment: savedAppointment,
     };
+    // return savedAppointment;
   }
 }
 
