@@ -28,7 +28,7 @@ const appointmentService = new AppointmentService(
   userService
 );
 
-console.log(appointmentService);
+// console.log(appointmentService);
 
 const appointmentController = new AppointmentController(appointmentService);
 

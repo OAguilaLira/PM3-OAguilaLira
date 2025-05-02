@@ -4,7 +4,7 @@ import routerUser from "./usersRouter";
 
 const router: Router = Router();
 
-router.use("/", routerAppointments);
+router.use("/appointments", routerAppointments);
 // router.use("/", routerUser);
 
 export default router;
