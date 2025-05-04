@@ -1,11 +1,33 @@
 import "reflect-metadata";
-import server from "./server";
+import app from "./app";
 import { config } from "./config/envs";
-import { AppDataSource } from "./config/data-source";
+import { connectDBwithRetry } from "./utils/handleDBconection";
+import { Server } from "http";
+import { createLogger } from "./logger";
+import { handleErrorStartServer } from "./utils/handleErrorStartServer";
+import { logDatabaseError } from "./utils/loggerDBerrorsConection";
+// Crear un logger específico para este archivo
+const logger = createLogger(__filename);
 
-AppDataSource.initialize().then((res) => {
-  console.log("Conexión exitosa con la base de datos");
-  server.listen(config.PORT, () => {
-    console.log(`Servidor escuchando en el puerto ${config.PORT}`);
-  });
-});
+async function serverStart() {
+  try {
+    await connectDBwithRetry();
+    const server: Server = app.listen(config.PORT, () => {
+      logger.info(`Server running on http://localhost:${config.PORT}`);
+    });
+
+    handleErrorStartServer(server);
+  } catch (error: any) {
+    // logger.error("Failed to start server. DB connection failed", {
+    //   stack: new Error().stack,
+    //   conectionInformation: {
+    //     PORT: config.PORT,
+    //   },
+    // });
+    logger.error("Failed to start server. DB connection failed.", error);
+    // logDatabaseError(error, config, __filename);
+    process.exit(1);
+  }
+}
+
+serverStart();
